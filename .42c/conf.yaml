@@ -1,0 +1,3 @@
+apis:
+  api test.yml:
+    alias: chat-app-api

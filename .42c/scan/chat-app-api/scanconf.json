@@ -1,0 +1,312 @@
+{
+  "version": "2.0.0",
+  "runtimeConfiguration": {
+    "environment": "default",
+    "laxTestingModeEnabled": false,
+    "apiConnectivityCheck": true,
+    "logLevel": "error",
+    "logDestination": "stdout+platform",
+    "logMaxFileSize": 2147483648,
+    "requestHeaderNameRequestId": "x-scan-request-id",
+    "requestHeaderNameScenarioId": "x-scan-scenario-id",
+    "requestHeaderNameRequestType": "x-scan-request-type",
+    "requestFlowrate": 100,
+    "requestTimeout": 30,
+    "requestTlsInsecureSkipVerify": true,
+    "responseFollowRedirection": false,
+    "responseMaxBodySizeScan": 10485760,
+    "happyPathOnly": false,
+    "maxRequestRetryAttempts": 5,
+    "maxScanDuration": 1800,
+    "memoryLimit": 2147483648,
+    "memoryTimeSpan": 10,
+    "reportMaxRequestSizeHappyPath": 8092,
+    "reportMaxRequestSizeTest": 8092,
+    "reportIncludeRequestBody": true,
+    "reportIncludeResponseBody": true,
+    "reportMaxHttpResponseSizeHappyPath": 8092,
+    "reportMaxBodySizeHappyPath": 8092,
+    "reportMaxHttpResponseSizeTest": 8092,
+    "reportMaxBodySizeTest": 8092,
+    "reportIssuesOnly": false,
+    "reportMaxIssues": 1000,
+    "reportMaxSize": 20971520,
+    "reportGenerateCurlCommand": true
+  },
+  "customizations": {
+    "happyPaths": {
+      "retry": 1,
+      "responsePolicy": {
+        "httpStatusExpected": true,
+        "mustBeConformant": true
+      },
+      "httpStatusExpected": []
+    },
+    "tests": {
+      "responsePolicy": {
+        "httpStatusExpected": true,
+        "mustBeConformant": true
+      }
+    }
+  },
+  "environments": {
+    "default": {
+      "variables": {
+        "bearerAuth": {
+          "name": "SCAN42C_SECURITY_BEARERAUTH",
+          "from": "environment",
+          "required": false
+        },
+        "host": {
+          "name": "SCAN42C_HOST",
+          "from": "environment",
+          "required": true,
+          "default": "http://localhost:3000"
+        }
+      }
+    }
+  },
+  "operations": {
+    "/products:get": {
+      "operationId": "/products:get",
+      "request": {
+        "operationId": "/products:get",
+        "auth": [
+          "bearerAuth"
+        ],
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/products:get",
+            "method": "GET",
+            "url": "{{host}}/products"
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "400": {
+            "expectations": {
+              "httpStatus": 400
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1products:get/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/protected:get": {
+      "operationId": "/protected:get",
+      "request": {
+        "operationId": "/protected:get",
+        "auth": [
+          "bearerAuth"
+        ],
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/protected:get",
+            "method": "GET",
+            "url": "{{host}}/protected"
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "401": {
+            "expectations": {
+              "httpStatus": 401
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1protected:get/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/signin:post": {
+      "operationId": "/signin:post",
+      "request": {
+        "operationId": "/signin:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/signin:post",
+            "method": "POST",
+            "url": "{{host}}/signin",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "requestBody": {
+              "mode": "json",
+              "json": {
+                "email": "user@example.com",
+                "password": "password123"
+              }
+            }
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "400": {
+            "expectations": {
+              "httpStatus": 400
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1signin:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/signout:post": {
+      "operationId": "/signout:post",
+      "request": {
+        "operationId": "/signout:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/signout:post",
+            "method": "POST",
+            "url": "{{host}}/signout"
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "400": {
+            "expectations": {
+              "httpStatus": 400
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1signout:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    },
+    "/signup:post": {
+      "operationId": "/signup:post",
+      "request": {
+        "operationId": "/signup:post",
+        "request": {
+          "type": "42c",
+          "details": {
+            "operationId": "/signup:post",
+            "method": "POST",
+            "url": "{{host}}/signup",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "requestBody": {
+              "mode": "json",
+              "json": {
+                "email": "user@example.com",
+                "password": "password123"
+              }
+            }
+          }
+        },
+        "defaultResponse": "200",
+        "responses": {
+          "200": {
+            "expectations": {
+              "httpStatus": 200
+            }
+          },
+          "400": {
+            "expectations": {
+              "httpStatus": 400
+            }
+          }
+        }
+      },
+      "scenarios": [
+        {
+          "key": "happy.path",
+          "requests": [
+            {
+              "fuzzing": true,
+              "$ref": "#/operations/~1signup:post/request"
+            }
+          ],
+          "fuzzing": true
+        }
+      ]
+    }
+  },
+  "authenticationDetails": [
+    {
+      "bearerAuth": {
+        "type": "bearer",
+        "default": "bearerAuth",
+        "credentials": {
+          "bearerAuth": {
+            "credential": "{{CiCZQT66OgKSefDWvZQROYUNfUmjySyNqlIiOV1D1+/izxIY5AhjnnFI/FcYBZj2URABDPnHO95/Bce9GnBNkjsW0vYcf1DKz9Zvixb58fb/GH07hsSNhdUlOiBGT9uTHr8c9MVSJnkRh/l52DIBw7vZ5O5D/d91C+dHbUviQpNXZ9zlxpN/u5v95JYE+8lZsOqoqW8avXkUKw9MePc2yzg5Hn7ygt/6XcpCGxG3}}",
+            "description": "bearerAuth security"
+          }
+        }
+      }
+    }
+  ]
+}
