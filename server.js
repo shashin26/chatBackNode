@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
 
-const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseUrl = "https://licchqttwdokwfoiuatq.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
