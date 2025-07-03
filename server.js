@@ -6,13 +6,15 @@ dotenv.config();
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
-const cors = require('cors');
+const cors = require("cors");
 // Enable CORS for all routes
-app.use(cors({
-  origin: 'http://localhost:4200',  // Allow only your Angular app's origin
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:4200", // Allow only your Angular app's origin
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -54,7 +56,7 @@ app.post("/signup", async (req, res) => {
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
-  
+
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -81,13 +83,6 @@ app.all("/signout", async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-});
-
-// Example of a protected route
-app.get("/protected", authenticateToken, (req, res) => {
-  res
-    .status(200)
-    .json({ message: "This is a protected route.", user: req.user });
 });
 
 // Example of a route to fetch products from Supabase
