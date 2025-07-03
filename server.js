@@ -6,6 +6,13 @@ dotenv.config();
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON requests
+const cors = require('cors');
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'http://localhost:4200',  // Allow only your Angular app's origin
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true
+}));
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -46,7 +53,8 @@ app.post("/signup", async (req, res) => {
 // This is the endpoint that will be used to sign in users and generate a JWT token
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
-
+  console.log(req.body);
+  
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -58,7 +66,7 @@ app.post("/signin", async (req, res) => {
     const { session, user } = data; //  session contains the Supabase-issued access token
     const token = session.access_token;
 
-    res.status(200).json({ token, user });
+    res.status(200).json({ token });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
